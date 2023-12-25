@@ -1,4 +1,5 @@
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
+import 'package:car_insurance_app/Module/Register/view/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -162,12 +163,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontSize: 13,
                                             fontWeight: FontWeight.w500,
                                             color: HexColor('#252525'))),
-                                    Text(
-                                      'Register Know',
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                          color: HexColor('#155D93')),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.to(RegisterScreen());
+                                      },
+                                      child: Text(
+                                        'Register Know',
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500,
+                                            color: HexColor('#155D93')),
+                                      ),
                                     ),
                                   ],
                                 ),

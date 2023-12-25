@@ -160,6 +160,7 @@
 
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
 import 'package:car_insurance_app/Module/Login/View/login_screen.dart';
+import 'package:car_insurance_app/Module/Register/view/register.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -240,7 +241,7 @@ class _SlideScreenState extends State<SlideScreen> {
                 ),
               ),
               onPressed: () {
-                // Handle your action
+                Get.to(RegisterScreen());
               },
               child: Text(
                 'Create an account',
