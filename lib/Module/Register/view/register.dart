@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:car_insurance_app/Module/Verification/Password/Controller/password_controller.dart';
 
 import 'package:car_insurance_app/Widgets/My%20TextForm%20Field/my_textform_field.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -97,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 20.ph,
                                 MyTextFormField(
-                                  validator: validatePhoneNumber,
+                                  //validator: validatePhoneNumber,
                                   controller: controller.phoneNumberController,
                                   textInputType: TextInputType.number,
                                   hintText: 'Phone Number',
@@ -279,11 +278,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   onPressed: () {
                                     if (controller.key.currentState!
                                         .validate()) {
+                                      controller.registerApi();
                                       controller.phoneNumber.value =
                                           "+${controller.countryCode}${controller.phoneNumberController.text}";
 
                                       if (!controller.isLoading) {
-                                        controller.verifyUserPhoneNumber();
+                                        print(controller.phoneNumber.value);
                                       }
                                     }
                                   },

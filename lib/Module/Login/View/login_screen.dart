@@ -6,13 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:car_insurance_app/Module/Verification/Password/Controller/password_controller.dart';
 
 import 'package:car_insurance_app/Widgets/My%20TextForm%20Field/my_textform_field.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../Constants/constants.dart';
 import '../../../../Widgets/My Button/my_button.dart';
+import '../../HomeScreen/View/home_screen.dart';
 import '../login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -149,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   name: 'Submit',
                                   onPressed: () {
                                     if (_key.currentState!.validate()) {
-                                      controller.loginApi(controller.phoneNum!,
+                                      controller.loginApi(
+                                          controller.phoneController.text,
                                           controller.passwordController.text);
                                     }
                                   },

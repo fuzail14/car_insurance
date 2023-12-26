@@ -1,8 +1,13 @@
+import 'package:car_insurance_app/Constants/Person/person.dart';
+import 'package:car_insurance_app/Module/Cars/view/add_car.dart';
+import 'package:car_insurance_app/Module/HomeScreen/Model/Car.dart';
+import 'package:car_insurance_app/Module/InsuranceOverView/View/insurance_overview.dart';
 import 'package:car_insurance_app/Module/MarketPlace/View/market_place_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -25,11 +30,11 @@ class HomeScreen extends GetView {
 
   List<Widget> _buildScreens() {
     return [
-      CustomLineChart(),
-      MarketPlaceScreen(),
+      Home(),
+      InsuranceCompaniesPage(),
       Container(),
       Container(),
-      Menu(),
+      //Menu(),
     ];
   }
 
@@ -37,34 +42,34 @@ class HomeScreen extends GetView {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.home),
-        title: ("Home"),
+        //title: ("Home"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.macwindow),
-        title: ("MarketPlace"),
+        icon: Icon(CupertinoIcons.car_fill),
+        //title: ("MarketPlace"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.app_badge_fill),
-        title: ("Approvals"),
+        icon: Icon(CupertinoIcons.square_arrow_down_on_square_fill),
+        // title: ("Approvals"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.waveform_circle),
-        title: ("Employee Center"),
+        icon: Icon(CupertinoIcons.person),
+        // title: ("Employee Center"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.tortoise_fill),
-        title: ("Menu"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
+      // PersistentBottomNavBarItem(
+      //   icon: Icon(CupertinoIcons.tortoise_fill),
+      //   title: ("Menu"),
+      //   activeColorPrimary: CupertinoColors.activeBlue,
+      //   inactiveColorPrimary: CupertinoColors.systemGrey,
+      // ),
       // Add more items as needed
     ];
   }
@@ -102,520 +107,265 @@ class HomeScreen extends GetView {
   }
 }
 
-class CustomLineChart extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      //resizeToAvoidBottomInset: true,
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Home'),
-      ),
-      child: SafeArea(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IncomeExpenseCard(),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xff020227),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                padding: EdgeInsets.all(16),
-                margin: EdgeInsets.all(16),
-                child: LineChart(
-                  LineChartData(
-                    lineTouchData: LineTouchData(
-                      touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.blueAccent,
-                        getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
-                          return touchedBarSpots.map((barSpot) {
-                            final flSpot = barSpot;
-                            return LineTooltipItem(
-                              '${flSpot.y}m',
-                              const TextStyle(color: Colors.white),
+    // List of car images and names for demonstration
+    List<Map<String, String>> cars = [
+      {
+        'image':
+            'https://img.freepik.com/free-photo/luxurious-car-parked-highway-with-illuminated-headlight-sunset_181624-60607.jpg?w=1800&t=st=1703577739~exp=1703578339~hmac=70e54f3ba4467f861c6e38aca3cb4ef9ca50f5a90de8914957f3bfc924b62fa5',
+        'name': 'Toyota Yaris'
+      },
+      {
+        'image':
+            'https://img.freepik.com/premium-photo/close-up-headlamp-light-modern-car-garage_427248-555.jpg?w=1480',
+        'name': 'Benz CL250'
+      },
+      {
+        'image':
+            'https://img.freepik.com/premium-photo/close-up-headlamp-light-modern-car-garage_427248-555.jpg?w=1480',
+        'name': 'Benz CL250'
+      },
+    ];
+
+    // List of suggested insurance companies for demonstration
+    List<String> suggestions = [
+      'https://dhow.com/wp-content/uploads/2017/12/Solidarity-Bahrain-assigned-FSR-rating.jpg',
+      'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2021-10-No184/Fb/GIG.png',
+      'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2022-11-No195/Images/snic.jpg',
+      'https://maroonfrog.com/projects/INH_Old/wp-content/uploads/2017/10/bni.jpg',
+    ];
+
+    return GetBuilder<HomeScreenController>(
+        init: HomeScreenController(),
+        builder: (controller) {
+          return Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        'assets/images/slide.png',
+                        width: 76.00000762939453,
+                        height: 75.00000762939453,
+                        fit: BoxFit.cover,
+                      ),
+                      13.ph,
+                      Text(
+                        'Welcome Back',
+                        style: GoogleFonts.lato(fontSize: 16),
+                      ),
+                      Text(
+                        'How can we help you today?',
+                        style: GoogleFonts.lato(
+                            fontSize: 32, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Image.asset('assets/images/home1.png'),
+                              SizedBox(height: 8),
+                              Text('File a claim'),
+                            ],
+                          ),
+                          48.pw,
+
+                          Image.asset('assets/images/home2.png'),
+                          SizedBox(height: 8),
+                          // Text('Quick Renewal'),
+                          48.pw,
+                          Image.asset('assets/images/home3.png'),
+                          SizedBox(height: 8),
+                          // Text('Road Assistance'),
+                        ],
+                      ),
+                      SizedBox(height: 50),
+                      Text(
+                        'Your Insured Cars',
+                        style: GoogleFonts.lato(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        width: double.infinity,
+                        height: 123,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 260,
+                              height: 123,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white),
+                              child: FutureBuilder<Car>(
+                                future: controller.getCars(
+                                    userid: controller.person.data!.id),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Show a loading indicator while waiting for the data
+                                  } else if (snapshot.hasData) {
+                                    return ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: snapshot.data!.data
+                                          .length, // Make sure data is not null before accessing length
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: 120,
+                                          height: 123,
+                                          margin: EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: Colors.white),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.network(
+                                                cars[index]['image'].toString(),
+                                                width: 117,
+                                                height: 56,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              10.ph,
+                                              Text(
+                                                snapshot.data!.data[index]
+                                                    .carName, // Make sure data[index] is not null
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text(
+                                        'Error: ${snapshot.error}'); // Display the error if there is one
+                                  } else {
+                                    return Text(
+                                        'No data available'); // Display this if there is no error and no data
+                                  }
+                                },
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(AddCarScreen(),
+                                    arguments: controller.person.data!.id);
+                              },
+                              child: Container(
+                                width: 120,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xff155d93)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.add),
+                                    10.ph,
+                                    Text('Add New',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white))
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 50),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Suggested for you',
+                          style: GoogleFonts.lato(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        height: 120,
+                        margin: EdgeInsets.only(left: 10),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: insuranceCompanies.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Get.to(InsuranceOverView(),
+                                    arguments: insuranceCompanies[index]);
+                              },
+                              child: Card(
+                                child: Image.network(
+                                    insuranceCompanies[index]['logo'],
+                                    fit: BoxFit.cover),
+                              ),
                             );
-                          }).toList();
-                        },
-                      ),
-                      touchCallback: (FlTouchEvent, LineTouchResponse) {},
-                      handleBuiltInTouches: true,
-                    ),
-                    gridData: FlGridData(
-                      show: true,
-                      drawHorizontalLine: true,
-                      horizontalInterval: 1,
-                      getDrawingVerticalLine: (value) {
-                        return FlLine(
-                          color: Colors.white10,
-                          strokeWidth: 1,
-                        );
-                      },
-                      getDrawingHorizontalLine: (value) {
-                        return FlLine(
-                          color: Colors.white10,
-                          strokeWidth: 1,
-                        );
-                      },
-                    ),
-                    titlesData: FlTitlesData(
-                      show: true,
-                      rightTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles:
-                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: _bottomTitleWidgets,
-                          reservedSize: 42,
+                          },
                         ),
                       ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: _leftTitleWidgets,
-                          reservedSize: 42,
-                        ),
-                      ),
-                    ),
-                    borderData: FlBorderData(
-                      show: true,
-                      border: Border.all(color: Color(0xff37434d), width: 1),
-                    ),
-                    minX: 0,
-                    maxX: 11,
-                    minY: 0,
-                    maxY: 6,
-                    lineBarsData: _linesBarData(),
+                      SizedBox(height: 20),
+                      // ... add more widgets as necessary
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
-  List<LineChartBarData> _linesBarData() {
-    LineChartBarData lineChartBarData1 = LineChartBarData(
-      spots: [
-        FlSpot(0, 1),
-        FlSpot(2, 3),
-        FlSpot(4, 1.5),
-        FlSpot(6, 4),
-        FlSpot(8, 3.2),
-        FlSpot(10, 4),
+  final List<Map<String, dynamic>> insuranceCompanies = [
+    {
+      'logo':
+          'https://dhow.com/wp-content/uploads/2017/12/Solidarity-Bahrain-assigned-FSR-rating.jpg',
+      'name': 'Solidarity Insurance B.S.C',
+      'description': 'Find coverage that’s right for you!',
+      'price': 'BD 170/year',
+    },
+    {
+      'logo':
+          'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2021-10-No184/Fb/GIG.png',
+      'name': 'Gulf Insurance Group',
+      'description': 'Ensuring your future dreams',
+      'price': 'BD 200/year',
+    },
+    {
+      'logo':
+          'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2022-11-No195/Images/snic.jpg',
+      'name': 'SNIC Insurance',
+      'description': 'Your Journey, Our Worry',
+      'price': 'BD 180/year',
+    },
+    {
+      'logo':
+          'https://maroonfrog.com/projects/INH_Old/wp-content/uploads/2017/10/bni.jpg',
+      'name': 'Bahrain National Insurance',
+      'description': 'Your car’s caretaker!',
+      'price': 'BD 200/year',
+    },
+    // Add more insurance companies here
+  ];
+
+  Widget _buildMenuIcon(IconData icon, String label) {
+    return Column(
+      children: [
+        Image.asset('assets/images/home1.png'),
+        SizedBox(height: 8),
+        Text(label),
       ],
-      isCurved: true,
-      color: Colors.purpleAccent,
-      barWidth: 4,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
-    );
-
-    LineChartBarData lineChartBarData2 = LineChartBarData(
-      spots: [
-        FlSpot(0, 2.8),
-        FlSpot(2, 1.9),
-        FlSpot(4, 3),
-        FlSpot(6, 2.5),
-        FlSpot(8, 2.2),
-        FlSpot(10, 2.8),
-      ],
-      isCurved: true,
-      color: Colors.blueAccent,
-      barWidth: 4,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
-    );
-
-    LineChartBarData lineChartBarData3 = LineChartBarData(
-      spots: [
-        FlSpot(0, 2.5),
-        FlSpot(2, 1),
-        FlSpot(4, 2.8),
-        FlSpot(6, 1.5),
-        FlSpot(8, 1.7),
-        FlSpot(10, 2.5),
-      ],
-      isCurved: true,
-      color: Colors.tealAccent,
-      barWidth: 4,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
-    );
-
-    return [lineChartBarData1, lineChartBarData2, lineChartBarData3];
-  }
-
-  Widget _bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff68737d),
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = Text('SEPT', style: style);
-        break;
-      case 5:
-        text = Text('OCT', style: style);
-        break;
-      case 8:
-        text = Text('DEC', style: style);
-        break;
-      default:
-        text = Text('', style: style);
-        break;
-    }
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 8.0,
-      child: text,
-    );
-  }
-
-  Widget _leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Color(0xff67727d),
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    return Text('${value.toInt()}m', style: style, textAlign: TextAlign.left);
-  }
-}
-
-class IncomeExpenseCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(16),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Income Vs Expense',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueGrey,
-              ),
-            ),
-            Divider(),
-            SizedBox(height: 16),
-            IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _InfoItem(
-                    title: 'Income Today',
-                    value: '\$15000.10',
-                    iconColor: Colors.blue,
-                    iconData: Icons.account_balance_wallet,
-                  ),
-                  VerticalDivider(),
-                  _InfoItem(
-                    title: 'Expense Today',
-                    value: '\$7342.40',
-                    iconColor: Colors.red,
-                    iconData: Icons.money_off,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 16),
-            IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _InfoItem(
-                    title: 'Income This Month',
-                    value: '\$200000.890',
-                    iconColor: Colors.orange,
-                    iconData: Icons.account_balance_wallet,
-                  ),
-                  VerticalDivider(),
-                  _InfoItem(
-                    title: 'Expense This Month',
-                    value: '\$83500.90',
-                    iconColor: Colors.pink,
-                    iconData: Icons.money_off,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
-
-class _InfoItem extends StatelessWidget {
-  final String title;
-  final String value;
-  final Color iconColor;
-  final IconData iconData;
-
-  const _InfoItem({
-    Key? key,
-    required this.title,
-    required this.value,
-    required this.iconColor,
-    required this.iconData,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Icon(
-            iconData,
-            color: iconColor,
-            size: 48,
-          ),
-          SizedBox(height: 8),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black54,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: iconColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// class LineChartSample extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: LineChart(
-//         LineChartData(
-//           gridData: FlGridData(
-//             show: true,
-//             drawVerticalLine: true,
-//             getDrawingHorizontalLine: (value) {
-//               return FlLine(
-//                 color: const Color(0xff37434d),
-//                 strokeWidth: 1,
-//               );
-//             },
-//             getDrawingVerticalLine: (value) {
-//               return FlLine(
-//                 color: const Color(0xff37434d),
-//                 strokeWidth: 1,
-//               );
-//             },
-//           ),
-//           titlesData: FlTitlesData(
-//             show: true,
-//             bottomTitles: AxisTitles(
-//               sideTitles: SideTitles(
-//                 showTitles: true,
-//                 reservedSize: 35,
-//                 getTitlesWidget: (double value, TitleMeta meta) {
-//                   return Text(value.toInt().toString(),
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: 12,
-//                       ));
-//                 },
-//                 interval: 1,
-//               ),
-//             ),
-//             leftTitles: AxisTitles(
-//               sideTitles: SideTitles(
-//                 showTitles: true,
-//                 getTitlesWidget: (double value, TitleMeta meta) {
-//                   return Text(value.toInt().toString(),
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: 12,
-//                       ));
-//                 },
-//                 reservedSize: 40,
-//                 interval: 1,
-//               ),
-//             ),
-//           ),
-//           borderData: FlBorderData(
-//             show: true,
-//             border: Border.all(color: const Color(0xff37434d), width: 1),
-//           ),
-//           minX: 0,
-//           maxX: 10,
-//           minY: 0,
-//           maxY: 6,
-//           lineBarsData: [
-//             LineChartBarData(
-//               spots: [
-//                 FlSpot(0, 3),
-//                 FlSpot(2.6, 2),
-//                 FlSpot(4.9, 5),
-//                 FlSpot(6.8, 2.5),
-//                 FlSpot(8, 4),
-//                 FlSpot(9.5, 3),
-//                 FlSpot(11, 4),
-//               ],
-//               isCurved: true,
-//               color: Colors.blue,
-//               barWidth: 5,
-//               isStrokeCapRound: true,
-//               dotData: FlDotData(
-//                 show: false,
-//               ),
-//               belowBarData: BarAreaData(
-//                 show: false,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class BarChartSample extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: BarChart(
-//         BarChartData(
-//           alignment: BarChartAlignment.spaceAround,
-//           maxY: 20,
-//           barTouchData: BarTouchData(
-//             enabled: false,
-//           ),
-//           titlesData: FlTitlesData(
-//             show: true,
-//             bottomTitles: AxisTitles(
-//               sideTitles: SideTitles(
-//                 showTitles: true,
-//                 reservedSize: 22,
-//                 getTitlesWidget: (double value, TitleMeta meta) {
-//                   String text;
-//                   switch (value.toInt()) {
-//                     case 0:
-//                       text = 'Mon';
-//                       break;
-//                     case 1:
-//                       text = 'Tue';
-//                       break;
-//                     case 2:
-//                       text = 'Wed';
-//                       break;
-//                     case 3:
-//                       text = 'Thu';
-//                       break;
-//                     case 4:
-//                       text = 'Fri';
-//                       break;
-//                     case 5:
-//                       text = 'Sat';
-//                       break;
-//                     case 6:
-//                       text = 'Sun';
-//                       break;
-//                     default:
-//                       text = '';
-//                   }
-//                   return SideTitleWidget(
-//                     axisSide: meta.axisSide,
-//                     space: 16.0,
-//                     child: Text(text,
-//                         style: TextStyle(
-//                             color: Colors.black,
-//                             fontWeight: FontWeight.bold,
-//                             fontSize: 14)),
-//                   );
-//                 },
-//               ),
-//             ),
-//             leftTitles: AxisTitles(
-//               sideTitles: SideTitles(showTitles: false),
-//             ),
-//           ),
-//           gridData: FlGridData(
-//             show: false,
-//           ),
-//           borderData: FlBorderData(
-//             show: false,
-//           ),
-//           barGroups: [
-//             BarChartGroupData(
-//               x: 0,
-//               barRods: [BarChartRodData(color: Colors.lightBlueAccent, toY: 8)],
-//               showingTooltipIndicators: [0],
-//             ),
-//             BarChartGroupData(
-//               x: 1,
-//               barRods: [
-//                 BarChartRodData(toY: 10, color: Colors.lightBlueAccent)
-//               ],
-//               showingTooltipIndicators: [0],
-//             ),
-//             BarChartGroupData(
-//               x: 2,
-//               barRods: [
-//                 BarChartRodData(toY: 14, color: Colors.lightBlueAccent)
-//               ],
-//               showingTooltipIndicators: [0],
-//             ),
-//             BarChartGroupData(
-//               x: 3,
-//               barRods: [
-//                 BarChartRodData(toY: 15, color: Colors.lightBlueAccent)
-//               ],
-//               showingTooltipIndicators: [0],
-//             ),
-//             BarChartGroupData(
-//               x: 4,
-//               barRods: [
-//                 BarChartRodData(toY: 13, color: Colors.lightBlueAccent)
-//               ],
-//               showingTooltipIndicators: [0],
-//             ),
-//             BarChartGroupData(
-//               x: 5,
-//               barRods: [
-//                 BarChartRodData(toY: 10, color: Colors.lightBlueAccent)
-//               ],
-//               showingTooltipIndicators: [0],
-//             ),
-//             BarChartGroupData(
-//               x: 6,
-//               barRods: [BarChartRodData(toY: 5, color: Colors.lightBlueAccent)],
-//               showingTooltipIndicators: [0],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

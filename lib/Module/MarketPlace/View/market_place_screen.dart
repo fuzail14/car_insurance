@@ -1,195 +1,143 @@
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
-import 'package:car_insurance_app/Module/MarketPlace/Controller/market_place_controller.dart';
-import 'package:car_insurance_app/Routes/set_routes.dart';
-import 'package:car_insurance_app/Widgets/AppBar/my_app_bar.dart';
-import 'package:car_insurance_app/Widgets/My%20Back%20Button/my_back_button.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:car_insurance_app/Module/HomeScreen/Controller/home_screen_controller.dart';
+import 'package:car_insurance_app/Module/InsuranceOverView/View/insurance_overview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
-import '../Widget/market_place_screen_card.dart';
 
-class MarketPlaceScreen extends GetView {
-  const MarketPlaceScreen({super.key});
+class InsuranceCompaniesPage extends StatelessWidget {
+  final List<Map<String, dynamic>> insuranceCompanies = [
+    {
+      'logo':
+          'https://dhow.com/wp-content/uploads/2017/12/Solidarity-Bahrain-assigned-FSR-rating.jpg',
+      'name': 'Solidarity Insurance B.S.C',
+      'description': 'Find coverage that’s right for you!',
+      'price': 'BD 170/year',
+    },
+    {
+      'logo':
+          'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2021-10-No184/Fb/GIG.png',
+      'name': 'Gulf Insurance Group',
+      'description': 'Ensuring your future dreams',
+      'price': 'BD 200/year',
+    },
+    {
+      'logo':
+          'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2022-11-No195/Images/snic.jpg',
+      'name': 'SNIC Insurance',
+      'description': 'Your Journey, Our Worry',
+      'price': 'BD 180/year',
+    },
+    {
+      'logo':
+          'https://maroonfrog.com/projects/INH_Old/wp-content/uploads/2017/10/bni.jpg',
+      'name': 'Bahrain National Insurance',
+      'description': 'Your car’s caretaker!',
+      'price': 'BD 200/year',
+    },
+    // Add more insurance companies here
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<MarketPlaceController>(
-        autoRemove: true,
-        init: MarketPlaceController(),
-        builder: (controller) {
-          return Scaffold(
-              //backgroundColor: Colors.red,
-              body: Stack(
-            children: [
-              Container(
-                height: 195.h,
-                padding: EdgeInsets.only(
-                  left: 43,
-                ).r,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(36).r,
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: <Color>[Color(0xff23c2ea), Color(0xff792efd)],
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Insurance Companies Page'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              // Implement filter logic
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide.none,
                 ),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                          child: SvgPicture.asset('assets/images/drawer.svg')),
-                    ),
-                    83.pw,
-                    Text(
-                      'MarketPlace',
-                      style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    ),
-                    25.pw,
-                    Container(
-                        child: SvgPicture.asset('assets/images/bellicon.svg')),
-                    15.pw,
-                    SizedBox(
-                        width: 32.w,
-                        height: 32.h,
-                        child: CircleAvatar(
-                            child: SvgPicture.asset(
-                                'assets/images/mobile_circle1.svg'))),
-                  ],
-                ),
+                filled: true,
+                fillColor: Colors.grey[200],
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  top: 128,
-                ).r,
-                padding: EdgeInsets.only(
-                  top: 31,
-                  left: 25,
-                ).r,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(36).r,
-                  color: Colors.white,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("your business insights",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        )),
-                    14.ph,
-                    Row(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CardMakretPlace(
-                          color: Color(0x14ff6d17),
-                          textColor: Color(0xffFF6D17),
-                          svgPath: 'assets/images/building.svg',
-                          headingText: 'Bussines Community',
-                          boxText: '1',
-                          onTap: () {
-                            Get.toNamed(bussinesCommunitiesScreen,
-                                arguments: controller.arguments);
-                          },
-                          subHeadingText:
-                              'It serves as a comprehensive directory, showcasing company profiles with industry, locations, products, services, and contact details for easy access and networking.',
+            ),
+          ),
+          20.ph,
+          Expanded(
+            child: ListView.builder(
+              itemCount: insuranceCompanies.length,
+              itemBuilder: (context, index) {
+                var company = insuranceCompanies[index];
+                return Container(
+                    width: 318,
+                    height: 180,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(InsuranceOverView(),
+                            arguments: insuranceCompanies[index]);
+                      },
+                      child: Card(
+                        color: Colors.white,
+                        margin:
+                            EdgeInsets.only(left: 16.0, top: 48.0, right: 16),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 10),
+                              child: Image.network(
+                                company['logo'],
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 140, top: 20),
+                              child: Text(company['name'],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  )),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 140, top: 50),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(company['description'],
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                  5.ph,
+                                  Text(company['price'],
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.blue)),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        20.pw,
-                        CardMakretPlace(
-                          color: Color(0x14fcab10),
-                          textColor: Color(0xffFCAB10),
-                          svgPath: 'assets/images/online_store.svg',
-                          headingText: 'Online Store',
-                          boxText: '2',
-                          onTap: () {
-                            Get.toNamed(onlineStoreScreen,
-                                arguments: controller.arguments);
-                          },
-                          subHeadingText:
-                              'It hosts an online store providing a platform for suppliers to showcase and sell their products online, catering to diverse customers worldwide.',
-                        ),
-                      ],
-                    ),
-                    20.ph,
-                    Row(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CardMakretPlace(
-                          color: Color(0x14fcab10),
-                          textColor: Color(0xffFCAB10),
-                          svgPath: 'assets/images/bussines_sale.svg',
-                          headingText: 'Bussines For Sale',
-                          boxText: '3',
-                          onTap: () {
-                            Get.toNamed(bussinesForSale,
-                                arguments: controller.arguments);
-                          },
-                          subHeadingText:
-                              'To facilitate the sale of existing business to potential buyers. Business owners looking to sell their ventures can list their opportunities in this section.',
-                        ),
-                        20.pw,
-                        CardMakretPlace(
-                          color: Color(0x14188f71),
-                          textColor: Color(0xff188F71),
-                          svgPath: 'assets/images/tenders.svg',
-                          headingText: 'Tenders',
-                          boxText: '4',
-                          onTap: () {
-                            Get.toNamed(tendersView,
-                                arguments: controller.arguments);
-                          },
-                          subHeadingText:
-                              'It presents a list of tenders for companies to bid on projects, contracts, and procurements, offered by buyers, fostering engagement and collaboration with various industries.',
-                        ),
-                      ],
-                    ),
-                    20.ph,
-                    Row(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CardMakretPlace(
-                          color: Color(0x144b6fff),
-                          textColor: Color(0xff4B6FFF),
-                          svgPath: 'assets/images/general_service.svg',
-                          headingText: 'Genral Services',
-                          boxText: '5',
-                          onTap: () {
-                            Get.toNamed(generalServiceView,
-                                arguments: controller.arguments);
-                          },
-                          subHeadingText:
-                              'It offers a general services catalog for service providers to showcase and sell their services online, catering to diverse customers worldwide.',
-                        ),
-                        20.pw,
-                        CardMakretPlace(
-                          color: Color(0x14ff4bcc),
-                          textColor: Color(0xff4B6FFF),
-                          svgPath: 'assets/images/investment_opportunities.svg',
-                          headingText: 'Invesetment Opportunities',
-                          boxText: '6',
-                          onTap: () {
-                            Get.toNamed(investMentOpportunityView,
-                                arguments: controller.arguments);
-                          },
-                          subHeadingText:
-                              'It presents investment opportunities listed by business owners aiming for partnerships, growth, franchising, and more attracting interested investors and potential collaborators.',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ));
-        });
+                      ),
+                    ));
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

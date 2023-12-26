@@ -19,7 +19,7 @@ class Menu extends StatelessWidget {
               child: ElevatedButton(
                 child: Text('logout'),
                 onPressed: () {
-                  MySharedPreferences.deleteUserData();
+                  //MySharedPreferences.deleteUserData();
                   Get.offAllNamed(checkPhoneNumber);
                 },
               ),

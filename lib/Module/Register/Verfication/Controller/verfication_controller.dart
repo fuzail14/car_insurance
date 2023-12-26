@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../../Constants/constants.dart';
 import '../../../../Routes/set_routes.dart';
 
+import '../../../HomeScreen/View/home_screen.dart';
 import '../../controller/register_controller.dart';
 
 class VerificationController extends GetxController {

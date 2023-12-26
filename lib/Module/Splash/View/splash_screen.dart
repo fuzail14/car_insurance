@@ -24,14 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void getUserSharedPreferencesData() async {
-    Person person = await MySharedPreferences.getUserData();
+    //Person person = await MySharedPreferences.getUserData();
+    //Get.to(SlideScreen);
 
-    if (person.Bearer == "") {
-      Timer(const Duration(seconds: 3), () => Get.to(SlideScreen()));
-    } else {
-      Timer(const Duration(seconds: 3),
-          () => Get.offNamed(homescreen, arguments: person));
-    }
+    Timer(const Duration(seconds: 3), () => Get.to(SlideScreen()));
   }
 
   @override

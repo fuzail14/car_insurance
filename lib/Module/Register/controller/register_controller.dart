@@ -7,9 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:car_insurance_app/Module/Verification/MobileNumber/Controller/register_controller.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:http/http.dart' as Http;
 import '../../../../Constants/Person/person.dart';
 import '../../../../Constants/api_routes.dart';
 import '../../../../Constants/constants.dart';
@@ -26,7 +24,6 @@ class RegisterController extends GetxController {
   final cprnumberController = TextEditingController();
   final confirmpasswordController = TextEditingController();
 
-  String? phoneNum;
   final key = GlobalKey<FormState>();
   bool isLoading = false;
   Person? person;
@@ -36,42 +33,51 @@ class RegisterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    countryCode.value = country.phoneCode;
-    countryFlag.value = country.flagEmoji;
+    // countryCode.value = country.phoneCode;
+    // countryFlag.value = country.flagEmoji;
   }
 
-  Future loginApi(String mobileNo, String password) async {
-    isLoading = true;
+  // Future<void> registerUser() async {
+  //   isLoading = true;
 
-    update();
-    Map<String, String> data = {"mobile_no": mobileNo, "password": password};
+  //   print(fullnameController.text);
+  //   print(cprnumberController.text);
+  //   print(phoneNumberController.text);
+  //   print(passwordController.text);
+  //   print('hi${confirmpasswordController.text}');
 
-    _repository.loginApi(data).then((value) async {
-      isLoading = false;
-      update();
-      if (kDebugMode) {
-        print(value);
-        final person = Person.fromJson(value);
+  //   Map<String, String> headers = {"Content-Type": "application/json"};
+  //   Map<String, dynamic> body = {
+  //     "full_name": fullnameController.text,
+  //     "cpr_number": cprnumberController.text,
+  //     "mobile_number": phoneNumberController.text,
+  //     "password": passwordController.text,
+  //     "confirm_password": confirmpasswordController.text,
+  //   };
 
-        log(person.toString());
-        MySharedPreferences.setUserData(person: person);
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(Api.register),
+  //       headers: headers,
+  //       body: jsonEncode(body),
+  //     );
 
-        Person person2 = await MySharedPreferences.getUserData();
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       // Handle the JSON data returned from the server
+  //       final data = jsonDecode(response.body);
 
-        Get.offAllNamed(homescreen, arguments: person2);
-
-        Get.snackbar('Login', person.data!.name.toString());
-      }
-    }).onError((error, stackTrace) {
-      isLoading = false;
-      update();
-      Get.snackbar('Error', '$error ', backgroundColor: Colors.white);
-      if (kDebugMode) {
-        print(error.toString());
-        print(stackTrace.toString());
-      }
-    });
-  }
+  //       // If the API has a specific key for the response data, ensure to access it correctly
+  //       Get.snackbar('Success', 'User registered successfully!');
+  //     } else {
+  //       // Error handling
+  //       Get.snackbar('Error', 'Failed to register user.');
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Error', 'An error occurred: $e');
+  //   } finally {
+  //     isLoading = false;
+  //   }
+  // }
 
   void togglePasswordView() {
     isHidden = !isHidden;
@@ -82,21 +88,22 @@ class RegisterController extends GetxController {
   RxString countryCode = "".obs;
   RxString phoneNumber = "".obs;
   Country country = Country(
-      phoneCode: "966",
-      countryCode: "SA",
+      phoneCode: "",
+      countryCode: "",
       e164Sc: 0,
       geographic: true,
       level: 1,
-      name: 'Saudi Arabia',
-      example: 'Saudi Arabia',
-      displayName: 'Saudi Arabia',
-      displayNameNoCountryCode: 'SA',
+      name: '',
+      example: '',
+      displayName: '',
+      displayNameNoCountryCode: '',
       e164Key: "");
 
   RxString verificationId = "".obs;
 
   verifyUserPhoneNumber() async {
     isLoading = true;
+    print(phoneNumber);
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneNumber.toString().trim(),
       verificationCompleted: (PhoneAuthCredential credential) async {
@@ -118,5 +125,51 @@ class RegisterController extends GetxController {
         isLoading = true;
       },
     );
+  }
+
+  Future registerApi() async {
+    isLoading = true;
+    update();
+
+    final response = await Http.post(
+      Uri.parse(Api.register),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "full_name": fullnameController.text,
+        "cpr_number": cprnumberController.text,
+        "mobile_number": phoneNumberController.text,
+        "password": passwordController.text,
+        "confirm_password": confirmpasswordController.text,
+      }),
+    );
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      verifyUserPhoneNumber();
+      myToast(msg: 'User Added Successfully');
+    } else if (response.statusCode == 403) {
+      isLoading = false;
+      update();
+      var data = jsonDecode(response.body.toString());
+
+      (data['errors'] as List)
+          .map((e) => myToast(
+                msg: e.toString(),
+              ))
+          .toList();
+    } else if (response.statusCode == 400) {
+      isLoading = false;
+      update();
+      var data = jsonDecode(response.body.toString());
+
+      (data['errors'] as List)
+          .map((e) => myToast(
+                msg: e.toString(),
+              ))
+          .toList();
+      myToast(msg: data);
+    }
   }
 }

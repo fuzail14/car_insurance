@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:car_insurance_app/Module/Verification/MobileNumber/Controller/register_controller.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../Constants/Person/person.dart';
@@ -14,6 +13,7 @@ import '../../../../Constants/constants.dart';
 import '../../../../Repo/Verification Repository/verification_repository.dart';
 import '../../../../Routes/set_routes.dart';
 import '../../../../Services/Shared Preferences/MySharedPreferences.dart';
+import '../HomeScreen/View/home_screen.dart';
 
 class LoginController extends GetxController {
   //final CheckPhoneNumberController checkPhoneNumberController = Get.find();
@@ -36,23 +36,24 @@ class LoginController extends GetxController {
     isLoading = true;
 
     update();
-    Map<String, String> data = {"mobile_no": mobileNo, "password": password};
+    Map<String, String> data = {"cpr_number": mobileNo, "password": password};
 
     _repository.loginApi(data).then((value) async {
       isLoading = false;
       update();
       if (kDebugMode) {
-        print(value);
+        print("value $value");
         final person = Person.fromJson(value);
+        Get.to(HomeScreen(), arguments: person);
 
-        log(person.toString());
-        MySharedPreferences.setUserData(person: person);
+        //log(person.toString());
+        // MySharedPreferences.setUserData(person: person);
 
-        Person person2 = await MySharedPreferences.getUserData();
+        //Person person2 = await MySharedPreferences.getUserData();
 
-        Get.offAllNamed(homescreen, arguments: person2);
+        // Get.offAllNamed(homescreen, arguments: person2);
 
-        Get.snackbar('Login', person.data!.name.toString());
+        Get.snackbar('Login', person.data!.fullName.toString());
       }
     }).onError((error, stackTrace) {
       isLoading = false;
