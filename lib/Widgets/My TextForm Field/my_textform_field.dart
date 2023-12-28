@@ -61,8 +61,8 @@ class MyTextFormField extends GetView {
     return Padding(
       padding: padding ?? EdgeInsets.fromLTRB(44.w, 16.h, 45.w, 0),
       child: SizedBox(
-        width: width ?? 286.w,
-        // height: height ?? 43.w,
+        width: width,
+        height: height,
         child: TextFormField(
           obscureText: obscureText,
           style: GoogleFonts.ubuntu(

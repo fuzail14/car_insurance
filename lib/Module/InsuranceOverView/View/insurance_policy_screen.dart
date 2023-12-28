@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
 import 'package:car_insurance_app/Module/InsuranceOverView/View/choose_policy_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +15,27 @@ class InsuranceCompanyPolicyScreen extends StatefulWidget {
 
 class _InsuranceCompanyPolicyScreenState
     extends State<InsuranceCompanyPolicyScreen> {
+  var arguments = Get.arguments;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    companyid = arguments[0];
+    companyname = arguments[1];
+    print(companyid);
+    print(companyname);
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _sumInsured;
+  TextEditingController _sumInsured = TextEditingController();
   String? _modelYear;
   String? _make;
   String? _model;
   DateTime _firstRegistrationDate = DateTime.now();
   TextEditingController _dateController = TextEditingController();
-
+  var companyid;
+  var companyname;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +56,11 @@ class _InsuranceCompanyPolicyScreenState
                 ),
                 20.ph,
                 TextFormField(
+                  controller: _sumInsured,
                   decoration: InputDecoration(
                     labelText: 'Sum Insured',
                   ),
                   keyboardType: TextInputType.number,
-                  onSaved: (value) {
-                    _sumInsured = value;
-                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter sum insured';
@@ -81,7 +94,7 @@ class _InsuranceCompanyPolicyScreenState
                 20.ph,
                 DropdownButtonFormField<String>(
                   value: _make,
-                  decoration: InputDecoration(labelText: 'Model'),
+                  decoration: InputDecoration(labelText: 'Make'),
                   items: ['Audi', 'Mercedes', 'G-Wagon']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
@@ -150,8 +163,27 @@ class _InsuranceCompanyPolicyScreenState
                 SizedBox(height: 70),
                 GestureDetector(
                   onTap: () {
-                    Get.to(ChoosePolicyScreen());
-                    if (_formKey.currentState!.validate()) {}
+                    print({
+                      companyid,
+                      companyname,
+                      _sumInsured.text,
+                      _modelYear,
+                      _make,
+                      _model,
+                      _dateController.text
+                    });
+
+                    if (_formKey.currentState!.validate()) {
+                      Get.to(ChoosePolicyScreen(), arguments: [
+                        companyid,
+                        companyname,
+                        _sumInsured.text,
+                        _modelYear,
+                        _make,
+                        _model,
+                        _dateController.text
+                      ]);
+                    }
                   },
                   child: Center(
                     child: Container(

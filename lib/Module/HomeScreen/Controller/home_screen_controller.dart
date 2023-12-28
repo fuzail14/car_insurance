@@ -24,16 +24,20 @@ class HomeScreenController extends GetxController {
   }
 
   Future<Car> getCars({required int userid}) async {
+    print('here');
     final response = await Http.get(
-      Uri.parse(Api.viewcars + "/" + userid.toString()),
+      Uri.parse(Api.getCars + "/" + userid.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    print(response.statusCode);
+    print(response.body);
 
     var data = jsonDecode(response.body.toString());
 
     if (response.statusCode == 200) {
+      print('data $data');
       return Car.fromJson(data);
     }
 

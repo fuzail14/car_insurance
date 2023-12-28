@@ -6,5 +6,7 @@ class Api {
   static const String login = baseUrl + "login";
   static const String register = baseUrl + "register";
   static const String cars = baseUrl + "cars";
-  static const String viewcars = baseUrl + "cars";
+  static const String getCars = baseUrl + "getCars";
+  static const String storeQuotes = baseUrl + "quote";
+  static const String viewQuotes = baseUrl + "quotes";
 }

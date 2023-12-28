@@ -193,6 +193,7 @@ class Home extends StatelessWidget {
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
+
                       Container(
                         width: double.infinity,
                         height: 123,
@@ -285,7 +286,60 @@ class Home extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 50),
+                      20.ph,
+
+                      Container(
+                          width: double.infinity,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: Color(0x14ff4bcc),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              // Get.to(InsuranceOverView(),
+                              //     arguments: insuranceCompanies[index]);
+                            },
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, top: 10, bottom: 10),
+                                  child: Image.asset(
+                                    'assets/images/slide2.png',
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 140, top: 20),
+                                  child: Text('Requested Quotes',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      )),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 140, top: 50),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('your requested quotes',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                      SizedBox(height: 20),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
@@ -329,6 +383,7 @@ class Home extends StatelessWidget {
 
   final List<Map<String, dynamic>> insuranceCompanies = [
     {
+      'id': 1,
       'logo':
           'https://dhow.com/wp-content/uploads/2017/12/Solidarity-Bahrain-assigned-FSR-rating.jpg',
       'name': 'Solidarity Insurance B.S.C',
@@ -336,6 +391,7 @@ class Home extends StatelessWidget {
       'price': 'BD 170/year',
     },
     {
+      'id': 2,
       'logo':
           'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2021-10-No184/Fb/GIG.png',
       'name': 'Gulf Insurance Group',
@@ -343,6 +399,7 @@ class Home extends StatelessWidget {
       'price': 'BD 200/year',
     },
     {
+      'id': 3,
       'logo':
           'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2022-11-No195/Images/snic.jpg',
       'name': 'SNIC Insurance',
@@ -350,6 +407,7 @@ class Home extends StatelessWidget {
       'price': 'BD 180/year',
     },
     {
+      'id': 4,
       'logo':
           'https://maroonfrog.com/projects/INH_Old/wp-content/uploads/2017/10/bni.jpg',
       'name': 'Bahrain National Insurance',

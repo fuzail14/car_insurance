@@ -182,7 +182,10 @@ class _InsuranceOverViewState extends State<InsuranceOverView> {
                 50.ph,
                 GestureDetector(
                   onTap: () {
-                    Get.to(InsuranceCompanyPolicyScreen());
+                    Get.to(InsuranceCompanyPolicyScreen(), arguments: [
+                      controller.data['id'],
+                      controller.data['name'],
+                    ]);
                   },
                   child: Center(
                     child: Container(

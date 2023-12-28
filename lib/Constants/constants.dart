@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-final Color primaryColor = HexColor("#4ebbd3");
+final Color primaryColor = HexColor("#175E94");
 final Color primaryColor2 = HexColor("#1f3996");
 
 var whiteColor = HexColor("FAFFFD");

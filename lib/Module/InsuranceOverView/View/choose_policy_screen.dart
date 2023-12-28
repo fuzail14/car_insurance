@@ -1,24 +1,28 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
+import 'package:car_insurance_app/Module/InsuranceOverView/View/insurance_company_policy1.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ChoosePolicyScreen extends StatefulWidget {
   @override
-  State<ChoosePolicyScreen> createState() => _ChoosePolicyScreenState();
+  State<ChoosePolicyScreen> createState() => ChoosePolicyScreenState();
 }
 
-class _ChoosePolicyScreenState extends State<ChoosePolicyScreen>
+class ChoosePolicyScreenState extends State<ChoosePolicyScreen>
     with SingleTickerProviderStateMixin {
+  var arguments = Get.arguments;
   int _selectedIndex = 0;
 
-  final List<String> _prices = ['BD 176.00', 'BD 220.00', 'BD 355.30'];
+  final List<String> prices = ['BD 176', 'BD 220', 'BD 355'];
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
+    print(arguments);
   }
 
   void _selectPolicy(int index) {
@@ -27,25 +31,26 @@ class _ChoosePolicyScreenState extends State<ChoosePolicyScreen>
     });
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _tabController.dispose();
+  //   super.dispose();
+  // }
 
   void _handleTabSelection() {
     if (_tabController.indexIsChanging) {
       setState(() {
         // Update the selected index to the tab's index
         print('Selected index: ${_tabController.index}');
-        print('Price: ${_prices[_tabController.index]}');
+        print('Price: ${prices[_tabController.index]}');
       });
     }
   }
 
   void _navigateToNextScreen(BuildContext context) {
-    final price = _prices[_tabController.index];
+    final price = prices[_tabController.index];
     print('Navigating with price: $price');
+    Get.to(InsuranceCompanyPolicy1(), arguments: [arguments, price]);
     // Navigator.push to the next screen along with the selected price
     // Pass the 'price' to the next screen. For example:
     // Navigator.of(context).push(MaterialPageRoute(
@@ -70,10 +75,15 @@ class _ChoosePolicyScreenState extends State<ChoosePolicyScreen>
                 ],
               ),
             ),
-            body: TabBarView(children: [
-              PolicyTabContent(price: _prices[0]),
-              Gold(price: _prices[1]),
-              Platinum(price: _prices[2]),
+            body: TabBarView(controller: _tabController, children: [
+              PolicyTabContent(price: '176'),
+
+              Gold(price: '220'),
+
+              Platinum(price: '355.30'),
+
+              // Gold(price: _prices[_selectedIndex]),
+              // Platinum(price: _prices[_selectedIndex]),
             ]),
             floatingActionButton: Padding(
               padding: const EdgeInsets.only(top: 800, left: 40),
@@ -123,7 +133,7 @@ class PolicyTabContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Example policy details, you should fetch these from your backend or state management solution
-
+    print(this.price);
     return Column(
       children: [
         Container(
@@ -290,7 +300,7 @@ class PolicyTabContent extends StatelessWidget {
               ),
               93.pw,
               Text(
-                price,
+                '176',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
@@ -326,7 +336,7 @@ class Gold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Example policy details, you should fetch these from your backend or state management solution
-
+    print(this.price);
     return Column(
       children: [
         Container(
@@ -476,7 +486,7 @@ class Gold extends StatelessWidget {
               ),
               93.pw,
               Text(
-                price,
+                '220',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
@@ -512,7 +522,7 @@ class Platinum extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Example policy details, you should fetch these from your backend or state management solution
-
+    print(this.price);
     return Column(
       children: [
         Container(
@@ -662,7 +672,7 @@ class Platinum extends StatelessWidget {
               ),
               93.pw,
               Text(
-                price,
+                '355.30',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
