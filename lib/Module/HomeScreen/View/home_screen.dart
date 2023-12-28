@@ -19,7 +19,10 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../Constants/constants.dart';
 import '../../../Services/Shared Preferences/MySharedPreferences.dart';
 import '../../../Widgets/admin_screen_custom_button.dart';
+import '../../Claim Page/claim_page.dart';
 import '../../Menu/View/menu_screen.dart';
+import '../../RequestedQuotes/requested_quotes.dart';
+import '../../UserScreen/user_screen.dart';
 import '../Controller/home_screen_controller.dart';
 
 class HomeScreen extends GetView {
@@ -29,13 +32,7 @@ class HomeScreen extends GetView {
   HomeScreen({super.key});
 
   List<Widget> _buildScreens() {
-    return [
-      Home(),
-      InsuranceCompaniesPage(),
-      Container(),
-      Container(),
-      //Menu(),
-    ];
+    return [Home(), InsuranceCompaniesPage(), ClaimPage(), UserScreen()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -286,6 +283,7 @@ class Home extends StatelessWidget {
                           ],
                         ),
                       ),
+
                       20.ph,
 
                       Container(
@@ -297,8 +295,8 @@ class Home extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              // Get.to(InsuranceOverView(),
-                              //     arguments: insuranceCompanies[index]);
+                              Get.to(RequestedQuote(),
+                                  arguments: controller.person.data!.id);
                             },
                             child: Stack(
                               children: [

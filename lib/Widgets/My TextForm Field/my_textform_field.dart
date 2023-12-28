@@ -52,7 +52,7 @@ class MyTextFormField extends GetView {
       this.validator,
       required this.hintText,
       this.labelTextColor,
-      required this.labelText,
+      this.labelText,
       this.hintTextColor,
       this.obscureText = false});
 

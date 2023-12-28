@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:car_insurance_app/Module/RequestedQuotes/Quote.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,24 +10,21 @@ import '../../../Routes/set_routes.dart';
 import '../../../Services/Shared Preferences/MySharedPreferences.dart';
 import 'package:http/http.dart' as Http;
 
-import '../Model/Car.dart';
+import '../HomeScreen/Controller/home_screen_controller.dart';
 
-class HomeScreenController extends GetxController {
+class RequestQouteController extends GetxController {
   var arguments = Get.arguments;
-  late final Person person;
-  String appBarDropdownval = 'Profile';
-  var appBarDropdownli = ['Profile', 'logout'];
-  //List<Car> carList = [];
+  int? id;
   @override
   void onInit() {
     super.onInit();
-    person = arguments;
+    id = arguments;
   }
 
-  Future<Car> getCars({required int userid}) async {
+  Future<Quote> getQuotes({required int userid}) async {
     print('here');
     final response = await Http.get(
-      Uri.parse(Api.getCars + "/" + userid.toString()),
+      Uri.parse(Api.getQuotes + "/" + userid.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -38,9 +36,9 @@ class HomeScreenController extends GetxController {
 
     if (response.statusCode == 200) {
       print('data $data');
-      return Car.fromJson(data);
+      return Quote.fromJson(data);
     }
 
-    return Car.fromJson(data);
+    return Quote.fromJson(data);
   }
 }

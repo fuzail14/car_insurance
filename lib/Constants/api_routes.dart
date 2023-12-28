@@ -8,5 +8,5 @@ class Api {
   static const String cars = baseUrl + "cars";
   static const String getCars = baseUrl + "getCars";
   static const String storeQuotes = baseUrl + "quote";
-  static const String viewQuotes = baseUrl + "quotes";
+  static const String getQuotes = baseUrl + "getQuotes";
 }
