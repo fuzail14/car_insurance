@@ -9,4 +9,6 @@ class Api {
   static const String getCars = baseUrl + "getCars";
   static const String storeQuotes = baseUrl + "quote";
   static const String getQuotes = baseUrl + "getQuotes";
+  static const String storeClaims = baseUrl + "storeClaims";
+  static const String getClaims = baseUrl + "getClaims";
 }

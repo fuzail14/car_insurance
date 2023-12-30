@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 class InsuranceCompaniesPage extends StatelessWidget {
   final List<Map<String, dynamic>> insuranceCompanies = [
     {
+      'id': 1,
       'logo':
           'https://dhow.com/wp-content/uploads/2017/12/Solidarity-Bahrain-assigned-FSR-rating.jpg',
       'name': 'Solidarity Insurance B.S.C',
@@ -15,6 +16,7 @@ class InsuranceCompaniesPage extends StatelessWidget {
       'price': 'BD 170/year',
     },
     {
+      'id': 2,
       'logo':
           'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2021-10-No184/Fb/GIG.png',
       'name': 'Gulf Insurance Group',
@@ -22,6 +24,7 @@ class InsuranceCompaniesPage extends StatelessWidget {
       'price': 'BD 200/year',
     },
     {
+      'id': 3,
       'logo':
           'https://www.atlas-mag.net/sites/default/files/images/AtlasMagazine_2022-11-No195/Images/snic.jpg',
       'name': 'SNIC Insurance',
@@ -29,6 +32,7 @@ class InsuranceCompaniesPage extends StatelessWidget {
       'price': 'BD 180/year',
     },
     {
+      'id': 4,
       'logo':
           'https://maroonfrog.com/projects/INH_Old/wp-content/uploads/2017/10/bni.jpg',
       'name': 'Bahrain National Insurance',

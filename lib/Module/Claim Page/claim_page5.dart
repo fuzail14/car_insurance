@@ -24,6 +24,7 @@ class _ClaimPage5State extends State<ClaimPage5> {
   ];
 
   int? _selectedIndex;
+  var arguments = Get.arguments;
 
   void _onItemSelected(int index) {
     setState(() {
@@ -85,7 +86,8 @@ class _ClaimPage5State extends State<ClaimPage5> {
                   if (_selectedIndex != null) {
                     // Do something with the selected garage
                     print('Selected Garage: ${garageNames[_selectedIndex!]}');
-                    Get.to(ClaimPage6());
+                    Get.to(ClaimPage6(),
+                        arguments: [arguments, garageNames[_selectedIndex!]]);
                   }
                 }),
           )

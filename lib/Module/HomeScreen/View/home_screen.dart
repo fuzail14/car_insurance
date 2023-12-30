@@ -1,5 +1,6 @@
 import 'package:car_insurance_app/Constants/Person/person.dart';
 import 'package:car_insurance_app/Module/Cars/view/add_car.dart';
+import 'package:car_insurance_app/Module/ClaimsView/claims_view.dart';
 import 'package:car_insurance_app/Module/HomeScreen/Model/Car.dart';
 import 'package:car_insurance_app/Module/InsuranceOverView/View/insurance_overview.dart';
 import 'package:car_insurance_app/Module/MarketPlace/View/market_place_screen.dart';
@@ -286,57 +287,77 @@ class Home extends StatelessWidget {
 
                       20.ph,
 
-                      Container(
-                          width: double.infinity,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            color: Color(0x14ff4bcc),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.to(RequestedQuote(),
-                                  arguments: controller.person.data!.id);
-                            },
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, top: 10, bottom: 10),
-                                  child: Image.asset(
-                                    'assets/images/slide2.png',
-                                    fit: BoxFit.cover,
-                                    width: 100,
-                                    height: 100,
-                                  ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                              height: 150,
+                              margin: EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: Color(0x14ff4bcc),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(RequestedQuote(),
+                                      arguments: controller.person.data!.id);
+                                },
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/investment_opportunities.svg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                    10.ph,
+                                    Text('View Quotes',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    Text('Your Quotes',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        )),
+                                  ],
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 140, top: 20),
-                                  child: Text('Requested Quotes',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                      )),
+                              )),
+                          Container(
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: Color(0x144b6fff),
+                              ),
+                              margin: EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(ClaimView(),
+                                      arguments: controller.person.data!.id);
+                                },
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/general_service.svg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                    10.ph,
+                                    Text('View Claims',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    Text('Your Claims',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        )),
+                                  ],
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 140, top: 50),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('your requested quotes',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
+                              )),
+                        ],
+                      ),
                       SizedBox(height: 20),
                       Padding(
                         padding: EdgeInsets.only(left: 10),

@@ -12,10 +12,15 @@ class ClaimPage2 extends StatefulWidget {
   const ClaimPage2({super.key});
 
   @override
-  State<ClaimPage2> createState() => _ClaimPage2State();
+  State<ClaimPage2> createState() => ClaimPage2State();
 }
 
-class _ClaimPage2State extends State<ClaimPage2> {
+class ClaimPage2State extends State<ClaimPage2> {
+  TextEditingController drivercprController = TextEditingController();
+  TextEditingController ownercprController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   String? selectedCompanyName;
   final List<Map<String, dynamic>> insuranceCompanies = [
     {
@@ -80,6 +85,7 @@ class _ClaimPage2State extends State<ClaimPage2> {
               MyTextFormField(
                 hintText: '',
                 labelText: '',
+                controller: drivercprController,
               ),
               14.ph,
               const SubHeading(
@@ -88,6 +94,7 @@ class _ClaimPage2State extends State<ClaimPage2> {
               5.ph,
               MyTextFormField(
                 hintText: '',
+                controller: ownercprController,
               ),
               20.ph,
               const SubHeading(
@@ -140,6 +147,7 @@ class _ClaimPage2State extends State<ClaimPage2> {
               MyTextFormField(
                 hintText: '',
                 textInputType: TextInputType.number,
+                controller: phoneNumberController,
               ),
               14.ph,
               const SubHeading(
@@ -150,12 +158,19 @@ class _ClaimPage2State extends State<ClaimPage2> {
                 suffixIcon: Icon(Icons.email_outlined),
                 hintText: '',
                 textInputType: TextInputType.number,
+                controller: emailController,
               ),
               40.ph,
               MyButton(
                 name: 'Continue',
                 onTap: () {
-                  Get.to(ClaimPage3());
+                  Get.to(ClaimPage3(), arguments: [
+                    drivercprController.text,
+                    ownercprController.text,
+                    phoneNumberController.text,
+                    emailController.text,
+                    selectedCompanyName,
+                  ]);
                 },
               )
             ],

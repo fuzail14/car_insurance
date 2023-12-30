@@ -21,12 +21,8 @@ class ClaimPage4 extends StatefulWidget {
 class ClaimPage4State extends State<ClaimPage4> {
   bool yesValue = false;
   bool noValue = false;
-  bool repairhecked = false;
-  bool cashhecked = false;
 
   var arguments = Get.arguments;
-  String? repairVal;
-  String? cashVal;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +91,7 @@ class ClaimPage4State extends State<ClaimPage4> {
                     MyButton(
                       name: 'Continue',
                       onTap: () {
-                        Get.to(ClaimPage5());
+                        Get.to(ClaimPage5(), arguments: arguments);
                       },
                     ),
                   ]),

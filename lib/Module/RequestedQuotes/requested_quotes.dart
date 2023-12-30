@@ -27,191 +27,90 @@ class _RequestedQuoteState extends State<RequestedQuote> {
           appBar: AppBar(
             title: Text('Requested Quote'),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FutureBuilder<Quote>(
-              future: controller.getQuotes(userid: controller.id!),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasData &&
-                    snapshot.data!.quotes.isNotEmpty) {
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.quotes.length,
-                      itemBuilder: (context, index) {
-                        var quote = snapshot.data!.quotes[index];
-                        return InkWell(
-                          onTap: () {},
-                          child: Container(
-                            height: 461.h,
-                            margin:
-                                EdgeInsets.only(top: 26, left: 27, right: 27).r,
-                            padding: EdgeInsets.only(
-                              top: 15,
-                              left: 21,
-                              right: 25,
-                            ).r,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5).r,
-                              border: Border.all(
-                                  color: Color(0xff26BDEB), width: 2),
-                              color: HexColor('#FFFFFF'),
+          body: FutureBuilder<Quote>(
+            future: controller.getQuotes(userid: controller.id!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData && snapshot.data!.quotes.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.quotes.length,
+                  itemBuilder: (context, index) {
+                    var quote = snapshot.data!.quotes[index];
+                    return InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: 461.h,
+                        margin: EdgeInsets.only(top: 26, left: 27, right: 27).r,
+                        padding: EdgeInsets.only(
+                          top: 15,
+                          left: 21,
+                          right: 25,
+                        ).r,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5).r,
+                          border:
+                              Border.all(color: Color(0xff26BDEB), width: 2),
+                          color: HexColor('#FFFFFF'),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: AutoSizeText(
+                                quote.companyName.toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                    color: HexColor('#707070')),
+                              ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Center(
+                              child: AutoSizeText(
+                                quote.sumInsured.toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.sp,
+                                    color: HexColor('#707070')),
+                              ),
+                            ),
+                            19.ph,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Center(
-                                  child: AutoSizeText(
-                                    quote.companyName.toString(),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14.sp,
-                                        color: HexColor('#707070')),
-                                  ),
-                                ),
-                                Center(
-                                  child: AutoSizeText(
-                                    quote.sumInsured.toString(),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12.sp,
-                                        color: HexColor('#707070')),
-                                  ),
-                                ),
-                                19.ph,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AutoSizeText(
-                                      quote.modelYear.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                    //SvgPicture.asset('assets/images/msg_phone.svg'),
-                                  ],
-                                ),
                                 AutoSizeText(
-                                  quote.make.toString(),
+                                  quote.modelYear.toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w600,
                                       fontSize: 12.sp,
                                       color: HexColor('#707070')),
                                 ),
-                                17.ph,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AutoSizeText(
-                                      'Model',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                    AutoSizeText(
-                                      'Premium Price',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AutoSizeText(
-                                      quote.model.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                    AutoSizeText(
-                                      quote.premiumPrice.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                  ],
-                                ),
-                                11.ph,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AutoSizeText(
-                                      'Total',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                    AutoSizeText(
-                                      'Plate Number',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AutoSizeText(
-                                      quote.totalPremiumPrice.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                    AutoSizeText(
-                                      quote.plateNumber.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.sp,
-                                          color: HexColor('#707070')),
-                                    ),
-                                  ],
-                                ),
-                                11.ph,
+                                //SvgPicture.asset('assets/images/msg_phone.svg'),
+                              ],
+                            ),
+                            AutoSizeText(
+                              quote.make.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.sp,
+                                  color: HexColor('#707070')),
+                            ),
+                            17.ph,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                                 AutoSizeText(
-                                  'Expiry Date',
+                                  'Model',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.montserrat(
@@ -220,7 +119,21 @@ class _RequestedQuoteState extends State<RequestedQuote> {
                                       color: HexColor('#707070')),
                                 ),
                                 AutoSizeText(
-                                  quote.expiryDate.toString(),
+                                  'Premium Price',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12.sp,
+                                      color: HexColor('#707070')),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AutoSizeText(
+                                  quote.model.toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.montserrat(
@@ -228,98 +141,167 @@ class _RequestedQuoteState extends State<RequestedQuote> {
                                       fontSize: 12.sp,
                                       color: HexColor('#707070')),
                                 ),
-                                18.ph,
-                                // AutoSizeText(
-                                //   'Description',
-                                //   maxLines: 1,
-                                //   overflow: TextOverflow.ellipsis,
-                                //   style: GoogleFonts.montserrat(
-                                //       fontWeight: FontWeight.w600,
-                                //       fontSize: 14.sp,
-                                //       color: HexColor('#0D0B0C')),
-                                // ),
-                                11.ph,
-                                Container(
-                                  width: 307.w,
-                                  height: 82.h,
-                                  padding: EdgeInsets.only(
-                                          left: 16,
-                                          top: 11,
-                                          bottom: 11,
-                                          right: 33)
-                                      .r,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Color(0xfff3f4f5)),
-                                  child: AutoSizeText(
-                                    '',
-                                    maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.sp,
-                                        color: HexColor('#707070')),
-                                  ),
+                                AutoSizeText(
+                                  quote.premiumPrice.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12.sp,
+                                      color: HexColor('#707070')),
                                 ),
-                                20.ph,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      height: 32.h,
-                                      width: 120.w,
-                                      decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius:
-                                              BorderRadius.circular(16).r,
-                                          border: Border.all(
-                                              color: HexColor('#27BCEB'))),
-                                      child: Center(
-                                        child: Text(
-                                          'Detail',
-                                          style: GoogleFonts.quicksand(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 10.sp,
-                                              color: HexColor('#27BCEB')),
-                                        ),
-                                      ),
-                                    ),
-                                    //30.pw,
-                                    Container(
-                                      width: 120.w,
-                                      height: 32.h,
-                                      decoration: BoxDecoration(
-                                        color: HexColor('#27BCEB'),
-                                        borderRadius:
-                                            BorderRadius.circular(16).r,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Respond',
-                                          style: GoogleFonts.quicksand(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 10.sp,
-                                              color: HexColor('#FFFFFF')),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
                               ],
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  return Center(child: Text('No data available'));
-                }
-              },
-            ),
+                            11.ph,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AutoSizeText(
+                                  'Total',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12.sp,
+                                      color: HexColor('#707070')),
+                                ),
+                                AutoSizeText(
+                                  'Plate Number',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12.sp,
+                                      color: HexColor('#707070')),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AutoSizeText(
+                                  quote.totalPremiumPrice.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12.sp,
+                                      color: HexColor('#707070')),
+                                ),
+                                AutoSizeText(
+                                  quote.plateNumber.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12.sp,
+                                      color: HexColor('#707070')),
+                                ),
+                              ],
+                            ),
+                            11.ph,
+                            AutoSizeText(
+                              'Expiry Date',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12.sp,
+                                  color: HexColor('#707070')),
+                            ),
+                            AutoSizeText(
+                              quote.expiryDate.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.sp,
+                                  color: HexColor('#707070')),
+                            ),
+                            18.ph,
+                            // AutoSizeText(
+                            //   'Description',
+                            //   maxLines: 1,
+                            //   overflow: TextOverflow.ellipsis,
+                            //   style: GoogleFonts.montserrat(
+                            //       fontWeight: FontWeight.w600,
+                            //       fontSize: 14.sp,
+                            //       color: HexColor('#0D0B0C')),
+                            // ),
+                            11.ph,
+                            Container(
+                              width: 307.w,
+                              height: 82.h,
+                              padding: EdgeInsets.only(
+                                      left: 16, top: 11, bottom: 11, right: 33)
+                                  .r,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color(0xfff3f4f5)),
+                              child: AutoSizeText(
+                                '',
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.sp,
+                                    color: HexColor('#707070')),
+                              ),
+                            ),
+                            20.ph,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: 32.h,
+                                  width: 120.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(16).r,
+                                      border: Border.all(
+                                          color: HexColor('#27BCEB'))),
+                                  child: Center(
+                                    child: Text(
+                                      'Detail',
+                                      style: GoogleFonts.quicksand(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 10.sp,
+                                          color: HexColor('#27BCEB')),
+                                    ),
+                                  ),
+                                ),
+                                //30.pw,
+                                Container(
+                                  width: 120.w,
+                                  height: 32.h,
+                                  decoration: BoxDecoration(
+                                    color: HexColor('#27BCEB'),
+                                    borderRadius: BorderRadius.circular(16).r,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Respond',
+                                      style: GoogleFonts.quicksand(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 10.sp,
+                                          color: HexColor('#FFFFFF')),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                return Center(child: Text('No data available'));
+              }
+            },
           ),
         );
       },

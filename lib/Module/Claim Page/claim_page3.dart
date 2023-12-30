@@ -16,8 +16,11 @@ class ClaimPage3 extends StatefulWidget {
 }
 
 class _ClaimPage3State extends State<ClaimPage3> {
+  var arguments = Get.arguments;
   var surveyDate;
   final TextEditingController surveyDateController = TextEditingController();
+  final TextEditingController vehiclenoController = TextEditingController();
+  final TextEditingController remarksController = TextEditingController();
 
   Future surveyDatePick(context) async {
     DateTime? picked = await showDatePicker(
@@ -61,6 +64,7 @@ class _ClaimPage3State extends State<ClaimPage3> {
               5.ph,
               MyTextFormField(
                 hintText: '',
+                controller: vehiclenoController,
               ),
               14.ph,
               const SubHeading(title: "Preferred Date to survey the car"),
@@ -81,12 +85,18 @@ class _ClaimPage3State extends State<ClaimPage3> {
               MyTextFormField(
                 maxLines: 4,
                 hintText: '',
+                controller: remarksController,
               ),
               40.ph,
               MyButton(
                 name: 'Continue',
                 onTap: () {
-                  Get.to(ClaimPage4());
+                  Get.to(ClaimPage4(), arguments: [
+                    arguments,
+                    vehiclenoController.text,
+                    surveyDateController.text,
+                    remarksController.text
+                  ]);
                 },
               )
             ],

@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
+import 'package:car_insurance_app/Module/Claim%20Page/claim_page2.dart';
+import 'package:car_insurance_app/Module/Claim%20Page/claimpage_controller.dart';
 import 'package:car_insurance_app/Module/InsuranceOverView/View/insurance_company_policy1.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -78,41 +81,49 @@ class _ClaimPage6State extends State<ClaimPage6> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-          child: Column(
-            children: <Widget>[
-              20.ph,
-              _buildImagePickerButton(
-                  'Driving License (Front and Back)', 'Driving License'),
-              20.ph,
-              // ... repeat for other categories ...
-              _buildImagePickerButton(
-                  'Ownership Card (Front and Back)', 'Ownership Card'),
-              20.ph,
-              // ... repeat for other categories ...
-              _buildImagePickerButton('Accident Photos', 'Accident Photos'),
-              20.ph,
-              // ... repeat for other categories ...
-              _buildImagePickerButton('Incident Report', 'Incident Report'),
-              20.ph,
+      body: GetBuilder<ClaimController>(
+          init: ClaimController(),
+          builder: (controller) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                child: Column(
+                  children: <Widget>[
+                    20.ph,
+                    _buildImagePickerButton(
+                        'Driving License (Front and Back)', 'Driving License'),
+                    20.ph,
+                    // ... repeat for other categories ...
+                    _buildImagePickerButton(
+                        'Ownership Card (Front and Back)', 'Ownership Card'),
+                    20.ph,
+                    // ... repeat for other categories ...
+                    _buildImagePickerButton(
+                        'Accident Photos', 'Accident Photos'),
+                    20.ph,
+                    // ... repeat for other categories ...
+                    _buildImagePickerButton(
+                        'Incident Report', 'Incident Report'),
+                    20.ph,
 
-              Container(
-                width: 297.1662902832031,
-                height: 48.48029708862305,
-                margin: EdgeInsets.all(30),
-                child: MyButton(
-                  name: 'Continue',
-                  onTap: () {
-                    // Get.to(ClaimPage5());
-                  },
+                    Container(
+                      width: 297.1662902832031,
+                      height: 48.48029708862305,
+                      margin: EdgeInsets.all(30),
+                      child: MyButton(
+                        name: 'Continue',
+                        onTap: () {
+                          controller.storeClaim();
+                          // Get.to(ClaimPage5());
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 }
