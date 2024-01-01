@@ -3,7 +3,9 @@ import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
 import 'package:car_insurance_app/Module/Claim%20Page/claim_page2.dart';
 import 'package:car_insurance_app/Module/Claim%20Page/claimpage_controller.dart';
 import 'package:car_insurance_app/Module/InsuranceOverView/View/insurance_company_policy1.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,6 +25,21 @@ class _ClaimPage6State extends State<ClaimPage6> {
     if (image != null) {
       setState(() {
         _pickedFiles[category] = image;
+      });
+    }
+  }
+
+  File? _pickedFile;
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _pickedFile = File(result.files.single.path!);
       });
     }
   }
@@ -94,17 +111,81 @@ class _ClaimPage6State extends State<ClaimPage6> {
                     _buildImagePickerButton(
                         'Driving License (Front and Back)', 'Driving License'),
                     20.ph,
-                    // ... repeat for other categories ...
+
                     _buildImagePickerButton(
                         'Ownership Card (Front and Back)', 'Ownership Card'),
                     20.ph,
-                    // ... repeat for other categories ...
+
                     _buildImagePickerButton(
                         'Accident Photos', 'Accident Photos'),
                     20.ph,
-                    // ... repeat for other categories ...
-                    _buildImagePickerButton(
-                        'Incident Report', 'Incident Report'),
+
+                    // _buildImagePickerButton(
+                    //     'Incident Report', 'Incident Report'),
+                    Column(
+                      children: [
+                        DottedBorder(
+                          color: HexColor('#155D93'),
+                          borderType: BorderType.RRect,
+                          radius: Radius.circular(12),
+                          padding: EdgeInsets.all(6),
+                          dashPattern: [8, 4],
+                          child: ListTile(
+                            title: Text('Incident Report'),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.file_copy_outlined),
+                                  onPressed: _pickFile,
+                                ),
+                                // ElevatedButton(
+                                //   onPressed: _pickFile,
+                                //   child: Text('Pick PDF File'),
+                                // ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (_pickedFile != null)
+                          Container(
+                            height: 400,
+                            width: 300,
+                            child: PDFView(
+                              filePath: _pickedFile!.path,
+                              onPageChanged: (int? page, int? total) {
+                                // Page changed callback
+                                print('page change: $page/$total');
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+
+                    // Center(
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       ElevatedButton(
+                    //         onPressed: _pickFile,
+                    //         child: Text('Pick PDF File'),
+                    //       ),
+                    //       SizedBox(height: 20),
+                    //       if (_pickedFile != null)
+                    //         Container(
+                    //           height: 400,
+                    //           width: 300,
+                    //           child: PDFView(
+                    //             filePath: _pickedFile!.path,
+                    //             onPageChanged: (int? page, int? total) {
+                    //               // Page changed callback
+                    //               print('page change: $page/$total');
+                    //             },
+                    //           ),
+                    //         ),
+                    //     ],
+                    //   ),
+                    // ),
                     20.ph,
 
                     Container(

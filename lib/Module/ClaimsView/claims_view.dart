@@ -36,8 +36,7 @@ class _ClaimViewState extends State<ClaimView> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData && snapshot.data!.claims.isNotEmpty) {
-                return Expanded(
-                    child: ListView.builder(
+                return ListView.builder(
                   itemCount: snapshot.data!.claims.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
@@ -408,7 +407,7 @@ class _ClaimViewState extends State<ClaimView> {
                       ),
                     );
                   },
-                ));
+                );
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else {
