@@ -33,14 +33,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      actions: [
-        GestureDetector(
-          onTap: bellOnTap,
-          child: Container(
-              margin: const EdgeInsets.only(right: 30).r,
-              child: SvgPicture.asset('assets/images/bellicon.svg')),
-        )
-      ],
+      // actions: [
+      //   GestureDetector(
+      //     onTap: bellOnTap,
+      //     child: Container(
+      //         margin: const EdgeInsets.only(right: 30).r,
+      //         child: SvgPicture.asset('assets/images/bellicon.svg')),
+      //   )
+      // ],
     );
   }
 }

@@ -1,6 +1,11 @@
 import 'package:car_insurance_app/Constants/Extensions/extensions.dart';
+import 'package:car_insurance_app/Module/Login/View/login_screen.dart';
+import 'package:car_insurance_app/Module/UserScreen/personal_info_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+
+import 'documents_claims_and_quotes_screen.dart';
 
 class UserScreen extends StatelessWidget {
   @override
@@ -70,15 +75,21 @@ class UserScreen extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                _buildListTile(Icons.person, 'Personal Information'),
+                _buildListTile(Icons.person, 'Personal Information', () {
+                  Get.to(PersonalInfo());
+                }),
                 20.ph,
-                _buildListTile(Icons.document_scanner, 'Documents'),
+                _buildListTile(Icons.document_scanner, 'Documents', () {
+                  Get.to(DocumentClaimsAndQuotes());
+                }),
+                //    20.ph,
+                // _buildListTile(Icons.help, 'Help'),
+                // 20.ph,
+                // _buildListTile(Icons.lock, 'Change Password'),
                 20.ph,
-                _buildListTile(Icons.help, 'Help'),
-                20.ph,
-                _buildListTile(Icons.lock, 'Change Password'),
-                20.ph,
-                _buildListTile(Icons.logout, 'Logout'),
+                _buildListTile(Icons.logout, 'Logout', () {
+                  Get.offAll(LoginScreen());
+                }),
               ],
             ),
           ),
@@ -87,7 +98,7 @@ class UserScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListTile(IconData icon, String title) {
+  Widget _buildListTile(IconData icon, String title, void Function()? onTap) {
     return ListTile(
       leading: Icon(
         icon,
@@ -98,9 +109,7 @@ class UserScreen extends StatelessWidget {
         Icons.arrow_forward_ios,
         color: HexColor('#155D93'),
       ),
-      onTap: () {
-        // Your navigation logic here
-      },
+      onTap: onTap,
     );
   }
 }

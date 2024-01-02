@@ -358,6 +358,7 @@ class Home extends StatelessWidget {
                               )),
                         ],
                       ),
+
                       SizedBox(height: 20),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
